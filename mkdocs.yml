@@ -1,0 +1,7 @@
+site_name: Minecraft NeoForge Modding Tutorial
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Setup: setup.md
+  - Basics: basics.md
