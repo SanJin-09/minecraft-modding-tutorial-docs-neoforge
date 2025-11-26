@@ -5,7 +5,7 @@
 
 打开IDEA并打开你的模版项目，以我的包名com.snajin.tutorial为例，请按照以下顺序找到目标文件夹位置：**src/main/java/com.snajin.tutorial**
 
-你会看到该文件夹目录下已经有了三个Java文件：Config.java，Tutorial.java，TutorialClient.java（后两个Java文件的命名应该与你的mod正式名相同，这里以我的mod：Tutoial为例）。我们需要在这里创建一个的文件夹。
+你会看到该文件夹目录下已经有了三个Java文件：Config.java，Tutorial.java，TutorialClient.java（后两个Java文件的命名应该与你的mod正式名相同，这里以我的mod：Tutorial为例）。我们需要在这里创建一个新的文件夹。
 
 右键**com.snajin.tutorial**文件夹，选择新建软件包，命名为：**register**。然后在**register**文件夹下新建一个Java类，命名为：**ModItems**。未来所有的自定义物品的注册都需要在这个Java文件中进行。
 
@@ -200,3 +200,136 @@ public static void register(IEventBus eventBus) {
 让我们回到**resources/assets/tutorial**目录，在这个目录下新建一个目录，命名为**textures**，在这个目录下再新建一个目录，命名为**item**，然后将你的`.png`格式的贴图文件放在**item**目录下。
 
 大功告成！现在进入游戏，输入`/give @a tutorial:custom_item`指令获取你的自定义物品，你应该可以得到一个：**带有正确的名称，正常的模型，正常的贴图**的物品。如果你发现它和你预期的不一样，请回到之前几个步骤，检查是否所有的命名都正确，是否所有的格式都符合，是否所有的文件都在正确的目录下。如果你在指令中根本找不到`tutorial:custom_item`这个物品，说明你的物品并没有成功被注册到Minecraft中，请回到注册物品阶段进行检查。不要灰心！debug是开发任何项目时都不可避免的事。
+
+## 将你的物品添加到创造物品栏中
+
+每次都要通过指令来获取我们的自定义物品实在是太麻烦了，为了解决这个问题，我们可以为mod创建自己的创造物品栏列表。
+
+现在请在register文件夹下新建一个Java类，命名为ModCreativeTabs。
+
+就像我们在这份文档开头提到过的，NeoForge在注册任何自定义内容时都需要一个**延迟注册器**，在此处也不例外。接下来请在**ModCreativeTabs.java**中写入以下内容：
+
+```
+public class ModCreativeTabs {
+
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Tutorial.MODID);
+
+
+}
+```
+
+这样，我们就为接下来的注册内容创建好了延迟注册器。接下来，写入以下代码来注册真正的自定义创造物品栏：
+
+```
+
+public class ModCreativeTabs {
+
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Tutorial.MODID);
+
+    public static final Supplier<CreativeModeTab> TUTORIAL_CUSTOM_CREATIVE_TAB = CREATIVE_TABS.register("tutorial_custom_creative_tab", () ->
+            CreativeModeTab.builder()
+                    .title(Component.translatable("tutorial_custom_creative_tab"))
+                    .icon(() -> new ItemStack(ModItems.CUSTOM_ITEM.get()))
+                    .displayItems(
+                        (parameters, output) -> {
+                        output.accept(ModItems.CUSTOM_ITEM_ONE.get());
+                        output.accept(ModItems.CUSTOM_ITEM_TWO.get());
+                        output.accept(ModItems.CUSTOM_ITEM_THERR.get());
+                        output.accept(ModItems.CUSTOM_ITEM_FOUR.get());
+                        }
+                    )
+                    .build());
+
+}
+
+```
+
+这段代码看起来很复杂，但是不用担心，我会依次解答每部分的实际作用。
+
+`public static final Supplier<CreativeModeTab> TUTORIAL_CUSTOM_CREATIVE_TAB = CREATIVE_TABS.register()`这段语句与我们在注册自定义物品时是一样的，都是使用了延迟注册方法通过一个延迟注册器总线注册一个新的自定义内容。
+
+在`register()`中，我们填入了两个参数，前一个`tutorial_custom_creative_tab`是这个自定义创造物品栏的注册名，后一个则是它的属性设置。
+
+在设置自定义创造物品栏的属性时，我们调用了一个构造器：`CreativeModeTab.builder()`，然后开始构造：
+
+- **.title()**：这条属性设置了该自定义创造物品栏的名称，其中我们使用了`Component.translatable()`，这个方法可以从mod的语言json文件中提取对应的元素，从而实现了在玩家选择不同语言文件时，鼠标悬停在创造物品栏上可以显示不同语言的翻译内容。json文件中的具体内容我们会在下面补上。
+- **.icon()**：这条属性设置了该自定义创造物品栏的图标。还记得原版的每一个创造物品栏都有一个自己的图标吗？我们也需要为自定义创造物品栏选择一个图标。如果你想用mod的自定义物品作为图标，和上面的示例代码一样，调用自定义物品的代码名称即可。如果你想使用原版Minecraft中的物品作为图标，例如苹果：`Items.APPLE`。**注意！**，使用原版物品时就不用在最后加上`.get()`方法的调用了。
+- **.displayItems()**：这条属性设置了该自定义创造物品栏中需要展示哪些物品。**(parameters, output) -> {}**是lambda表达式的固定写法，后面的中括号中可填入你想要展示的物品，展示顺序与代码填入顺序有关。
+
+最后，创建一个注册方法：
+
+```
+
+public class ModCreativeTabs {
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Tutorial.MODID);
+
+    public static final Supplier<CreativeModeTab> TUTORIAL_CUSTOM_CREATIVE_TAB = CREATIVE_TABS.register("tutorial_custom_creative_tab", () ->
+            CreativeModeTab.builder()
+                    .title(Component.translatable("tutorial_custom_creative_tab"))
+                    .icon(() -> new ItemStack(ModItems.CUSTOM_ITEM.get()))
+                    .displayItems(
+                            (parameters, output) -> {
+                                output.accept(ModItems.CUSTOM_ITEM_ONE.get());
+                                output.accept(ModItems.CUSTOM_ITEM_TWO.get());
+                                output.accept(ModItems.CUSTOM_ITEM_THERR.get());
+                                output.accept(ModItems.CUSTOM_ITEM_FOUR.get());
+                            }
+                    )
+                    .build());
+    
+    public static void register(IEventBus eventBus) {
+        CREATIVE_TABS.register(eventBus);
+    }
+}
+
+```
+
+现在我们已经注册好了自定义创造物品栏,接下来和自定义物品一样，我们还需要在语言json文件中加上它的翻译内容，然后将它注册到主类的mod总线中。
+
+打开**resources/assets/tutorial/lang/**路径下的**en_us.json**文件，在文件中加入这样的内容：
+
+```
+{
+    ...
+
+    "itemGroup.tutorial_custom_creative_tab":"Custom Creative Tab"
+
+    ...
+}
+```
+
+然后打开**zh_cn.json**文件，加上：
+
+```
+{
+    ...
+
+    "itemGroup.tutorial_custom_creative_tab":"自定义创造物品栏"
+
+    ...
+}
+```
+
+这样我们就做好了自定义创造物品栏的中英双语文本准备。
+
+现在打开Tutoial.java文件，在主类方法`public Tutorial(IEventBus modEventBus, ModContainer modContainer) {}`中加上：
+
+```
+public Tutorial(IEventBus modEventBus, ModContainer modContainer) {
+
+        modEventBus.addListener(this::commonSetup);
+
+        NeoForge.EVENT_BUS.register(this);
+
+        ModItems.ITEMS.register(modEventBus);
+
+        // 注意！ModCreativeTabs的注册一定要在ModItems的注册之后！负责会出现依赖错误导致游戏启动时报错
+        ModCreativeTabs.CREATIVE_TABS.register(modEventBus);
+
+        modEventBus.addListener(this::addCreative);
+
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+```
+
+一切准备就绪，现在启动游戏，进入你的存档并更改为创造模式。打开背包，点击翻页，你应该会看到你的自定义创造物品栏，其中展示着你填入的物品。

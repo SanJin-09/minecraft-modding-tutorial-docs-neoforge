@@ -3,5 +3,9 @@ theme:
   name: material
 nav:
   - Home: index.md
-  - Setup: setup.md
-  - Basics: basics.md
+  - 教程总揽:
+      - 准备工作:
+          - 配置环境与一些工具: tutorial/getstarted/EnvironmentConfiguration.md
+      - 物品(Items):
+          - 注册并构建物品: tutorial/items/CreateFirstItem.md
+          - 为物品添加多样的属性: tutorial/items/VariousItem.md
