@@ -197,7 +197,7 @@ public static void register(IEventBus eventBus) {
 
 来到最后一步！使用你的绘图工具为你的自定义物品绘制贴图。如果你不希望你的物品在Minecraft世界中显得很违和，那么请使用16x16的画布进行绘制，这是所有Minecraft物品的统一贴图大小。当然，贴图的大小并没有限制，你想要多精细的贴图都可以，只需要保证最后导出的格式是`.png`即可！
 
-让我们回到**resources/assets/tutorial**目录，在这个目录下新建一个目录，命名为**textures**，在这个目录下再新建一个目录，命名为**item**，然后将你的`.png`格式的贴图文件放在**item**目录下。
+让我们回到**resources/assets/tutorial**目录，在这个目录下新建一个目录，命名为**textures**，在这个目录下再新建一个目录，命名为**item**，然后将你的`.png`格式的贴图文件命名为`custom_item`，然后放在**item**目录下。
 
 大功告成！现在进入游戏，输入`/give @a tutorial:custom_item`指令获取你的自定义物品，你应该可以得到一个：**带有正确的名称，正常的模型，正常的贴图**的物品。如果你发现它和你预期的不一样，请回到之前几个步骤，检查是否所有的命名都正确，是否所有的格式都符合，是否所有的文件都在正确的目录下。如果你在指令中根本找不到`tutorial:custom_item`这个物品，说明你的物品并没有成功被注册到Minecraft中，请回到注册物品阶段进行检查。不要灰心！debug是开发任何项目时都不可避免的事。
 
@@ -323,7 +323,7 @@ public Tutorial(IEventBus modEventBus, ModContainer modContainer) {
 
         ModItems.ITEMS.register(modEventBus);
 
-        // 注意！ModCreativeTabs的注册一定要在ModItems的注册之后！负责会出现依赖错误导致游戏启动时报错
+        // 注意！ModCreativeTabs的注册一定要在ModItems的注册之后！否则会出现依赖错误导致游戏启动时报错
         ModCreativeTabs.CREATIVE_TABS.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);

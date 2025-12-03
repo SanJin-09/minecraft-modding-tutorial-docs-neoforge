@@ -20,7 +20,7 @@ public class ModItems {
 }
 ```
 
-聪明的你应该注意到了，在这段注册代码的最后，有一个称为为`new Item.Properties()`的参数，这个参数正是本节文档的重点：为`new Item.Properties()`添加更多设置。
+聪明的你应该注意到了，在这段注册代码的最后，有一个称为`new Item.Properties()`的参数，这个参数正是本节文档的重点：为`new Item.Properties()`添加更多设置。
 
 ### 简单的食物物品属性设置
 

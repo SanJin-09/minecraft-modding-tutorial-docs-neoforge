@@ -2,10 +2,13 @@ site_name: Minecraft Modding Tutorial
 theme:
   name: material
 nav:
-  - Home: index.md
+  - Home: README.md
   - 教程总揽:
       - 准备工作:
           - 配置环境与一些工具: tutorial/getstarted/EnvironmentConfiguration.md
       - 物品(Items):
           - 注册并构建物品: tutorial/items/CreateFirstItem.md
           - 为物品添加多样的属性: tutorial/items/VariousItem.md
+          - 添加自定义的工具与武器: tutorial/items/ToolsAndWeapons.md
+      - 数据(Data):
+          - 数据生成(DataGen): tutorial/data/DataGeneration.md
