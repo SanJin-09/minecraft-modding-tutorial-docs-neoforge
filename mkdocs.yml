@@ -2,7 +2,7 @@ site_name: Minecraft Modding Tutorial
 theme:
   name: material
 nav:
-  - Home: README.md
+  - Home: index.md
   - 教程总揽:
       - 准备工作:
           - 配置环境与一些工具: tutorial/getstarted/EnvironmentConfiguration.md
