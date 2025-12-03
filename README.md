@@ -1,5 +1,7 @@
 # Minecraft模组开发文档指南 基于NeoForge API
 _——一篇为使用NeoForge API的Minecraft模组开发者提供中文指导的文档指南_
+
+完整文档地址：https://sanjin-09.github.io/minecraft-modding-tutorial-docs-neoforge/
 ## 一些 Q & A
 1. **什么是NeoForge，为什么使用它开发Minecraft模组？**\
 NeoForge 是 Minecraft Forge 的官方分支项目，由原 Forge 开发团队几乎全体成员于 2023 年 7 月创建146。它继承了 Forge 的模组开发功能，并进行了多项技术革新。\
@@ -12,11 +14,6 @@ NeoForge 是 Minecraft Forge 的官方分支项目，由原 Forge 开发团队�
 目前，关于NeoForge API的使用指南并不多，国内资源平台上只有一些搬运内容，而即使是在外网平台（YouTube），基于NeoForge API的Minecraft模组编程完整指导频道也只有一个，其余的则是一些在Reddit或是类似的社区平台上的零散内容。\
 NeoForge官方有自己的使用文档：**NeoForge Documentation**，但是它的内容对刚接触Minecraft模组开发的新手并不太友好，更重要的是，它是英文的，我相信你和我一样都不能忍受糟糕的浏览器翻译，这篇文档便因此诞生，**我们将用中文给出一份完整的，适于模组开发新手的，高版本Minecraft的模组开发指南**。\
 本文档不会涉及太深奥的功能实现，Minecraft的结构并不复杂，写出优质的模组更多需要的是创想力与扎实的项目编写能力。
-
-## GitHub Pages 部署提示
-- 仓库已经提供了 `.github/workflows/gh-pages.yml` 工作流，会在 push 到 `main` 分支时自动构建 MkDocs 站点并发布到 GitHub Pages。
-- 请在仓库的 **Settings → Pages** 中将 Source 设为 **GitHub Actions**，第一次生效后 Pages 会生成 `github-pages` 环境和站点 URL；如果未开启，访问站点会返回 404。
-- 如果需要手动触发一次部署以创建 `gh-pages` 分支，可以在 **Actions** 中选择 “Deploy MkDocs site” 工作流并点击 **Run workflow**。
 ## 你可能会用到
 - NeoForge官方API使用文档：https://docs.neoforged.net/
 - 适用于Java与Kotlin专业开发的Intellij IDEA：https://www.jetbrains.com/zh-cn/idea/
