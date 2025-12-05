@@ -11,7 +11,7 @@
 在你的主mod包里创建一个数据生成入口类（如：`java/com/sanjin/tutorial/datagen/ModDataGenerators.java`），然后写入以下内容：
 
 ```
-@EventBusSubscriber(modid = Tutorial.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Tutorial.MODID)
 public class ModDataGenerators {
 
     @SubscribeEvent
@@ -21,6 +21,7 @@ public class ModDataGenerators {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         ExistingFileHelper fileHelper = event.getExistingFileHelper();
 
+        // 以下代码请在你完成相应的java类后再写入！例如写完ModRecipeProvider.java文件后，再将它添加到if语句中
         if (event.includeServer()) {
             generator.addProvider(true, new ModRecipeProvider(output, lookupProvider));
             generator.addProvider(true, new ModLootTableProvider(output, lookupProvider));
@@ -56,12 +57,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 }
 ```
 
-注册到DataGen：
-```
-generator.addProvider(true, new ModItemModelProvider(output, fileHelper));
-```
-
-输出：`assets/<modid>/models/item/*.json`，贴图需放在`assets/<modid>/textures/item/`。
+然后注册到DataGen。注意！贴图需放在`assets/<modid>/textures/item/`，如果写入DataGen的物品缺少贴图，运行DataGen时会报错！
 
 ## 生成方块模型文件
 
@@ -84,14 +80,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
 }
 ```
 
-常用方法（2.0.115 可用）：
+常用方法：
 - `simpleBlock(Block)`：生成`blockstates/<name>.json`与`models/block/<name>.json`（cube_all）。
 - `cubeAll(Block)`：可与`simpleBlockItem`结合，为方块物品生成模型。
-
-注册：
-```
-generator.addProvider(true, new ModBlockStateProvider(output, fileHelper));
-```
 
 ## 生成方块状态文件
 
@@ -114,6 +105,10 @@ protected void registerStatesAndModels() {
 
 输出：`blockstates/<name>.json` + `models/block/*.json` + `models/item/*.json`（方块物品）。
 
+如果你的方块具备动画、复杂贴图等等导致使用DataGen生成太麻烦，你可以依然使用Blockbench或其他软件导出的json文件作为该方块的模型/状态文件，放入**resources/assets/tutorial**目录下的**blcokstates**文件夹和**models/block**目录下
+
+放心，mod加载时，DataGen生成的json文件与你手动导入/手写的json文件都会被检测。只要确保同一个物品/方块有唯一的资源文件即可
+，否则可能会导致资源加载出错。
 ## 编写配方生成器（RecipeProvider）
 
 新建`ModRecipeProvider`继承`RecipeProvider`：

@@ -10,5 +10,7 @@ nav:
           - 注册并构建物品: tutorial/items/CreateFirstItem.md
           - 为物品添加多样的属性: tutorial/items/VariousItem.md
           - 添加自定义的工具与武器: tutorial/items/ToolsAndWeapons.md
+      - 方块(Blocks):
+          - 添加自定义方块: tutorial/block/AddCustomBlock.md
       - 数据(Data):
           - 数据生成(DataGen): tutorial/data/DataGeneration.md
